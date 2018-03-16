@@ -8,8 +8,9 @@ jobs:
   setup:
     <<: *defaults
     steps:
-      - run: mkdir -p code-gov-api && cd code-gov-api
-      - checkout
+      - run: mkdir -p code-gov-api
+      - checkout:
+          path: /tmp/code-gov-api
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
