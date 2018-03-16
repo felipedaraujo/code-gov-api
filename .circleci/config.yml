@@ -1,10 +1,14 @@
+defaults: &defaults
+  working_directory: /tmp
+  docker:
+    - image: circleci/node:8.9.3-stretch
+    - image: elasticsearch:2.4
 version: 2
 jobs:
-  build:
-    working_directory: ~/code-gov-api
-    docker:
-      - image: circleci/node:8.9.3-stretch
+  setup:
+    <<: *defaults
     steps:
+      - run: mkdir -p code-gov-api && cd code-gov-api
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
@@ -14,10 +18,32 @@ jobs:
       - run:
           name: install-node-modules
           command: npm install --all
+      - run:
+          name: download-cc-test-reporter
+          command: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      - run:
+          name: make-test-reporter-executable
+          command: chmod +x ./cc-test-reporter
+       # Install Cloud Foundry cli (cf) before deploy step. cf is used to push project to Cloud.gov
+      - run:
+          name: install-cf-cli
+          command: |
+            curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
+            sudo dpkg -i cf-cli_amd64.deb
+            cf -v
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
-            - ./node_modules
+            - /tmp/code-gov-api/bnode_modules
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - code-gov-api
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/code-gov-api
       - run:
           name: run-linter
           command: npm run lint
@@ -25,31 +51,12 @@ jobs:
           name: run-security-check
           command: npm run security-check
   test:
-    working_directory: ~/code-gov-api
-    docker:
-      - image: circleci/node:8.9.3-stretch
+    <<: *defaults
     steps:
-      - checkout
-      - run:
-          name: download-cc-test-reporter
-          command: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-      - run:
-          name: make-test-reporter-executable
-          command: chmod +x ./cc-test-reporter
+      - attach_workspace:
+          at: /tmp/code-gov-api
       - run:
           command: ./cc-test-reporter before-build
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: verify-npm-cache
-          command: npm cache verify
-      - run:
-          name: install-node-modules
-          command: npm install --all
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
       - run:
           name: run-test
           command: npm run unit-test
@@ -63,32 +70,12 @@ jobs:
           path: coverage
           prefix: coverage
   integration:
-    working_directory: ~/code-gov-api
-    docker:
-      - image: circleci/node:8.9.3-stretch
-      - image: elasticsearch:2.4
+    <<: *defaults
     steps:
-      - checkout
-      - run:
-          name: download-cc-test-reporter
-          command: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-      - run:
-          name: make-test-reporter-executable
-          command: chmod +x ./cc-test-reporter
+      - attach_workspace:
+          at: /tmp/code-gov-api
       - run:
           command: ./cc-test-reporter before-build
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: verify-npm-cache
-          command: npm cache verify
-      - run:
-          name: install-node-modules
-          command: npm install --all
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
       - run:
           name: get-data
           command: npm run index
@@ -105,54 +92,20 @@ jobs:
           path: coverage
           prefix: coverage
   deploy-staging:
-    working_directory: ~/code-gov-api
-    docker:
-      - image: circleci/node:8.9.3-stretch
+    <<: *defaults
     steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: install-node-modules
-          command: npm install --all
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      # Install Cloud Foundry cli (cf) before deploy step. cf is used to push project to Cloud.gov
-      - run:
-          name: install-cf-cli
-          command: |
-            curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
-            sudo dpkg -i cf-cli_amd64.deb
-            cf -v
+      - attach_workspace:
+          at: /tmp/code-gov-api
       - run:
           name: deploy-to-staging
           command: |
             cf login -a ${CF_URL} -u ${CF_STAGING_DEPLOYER} -p ${CF_STAGING_DEPLOYER_PASS} -o ${CF_ORG} -s ${CF_STAGING_SPACE}
             cf push ${CF_APP} -n code-api-staging.app.cloud.gov
   deploy-production:
-    working_directory: ~/code-gov-api
-    docker:
-      - image: circleci/node:8.9.3-stretch
+    <<: *defaults
     steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: install-node-modules
-          command: npm install --all
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: install-cf-cli
-          command: |
-            curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
-            sudo dpkg -i cf-cli_amd64.deb
-            cf -v
-      # Production deployment.
+      - attach_workspace:
+          at: /tmp/code-gov-api
       - deploy:
           command: |
               cf login -a ${CF_URL} -u ${CF_PRODUCTION_DEPLOYER} -p ${CF_PRODUCTION_DEPLOYER_PASS} -o ${CF_ORG} -s ${CF_PRODUCTION_SPACE}
@@ -161,7 +114,10 @@ workflows:
   version: 2
   build-test-deploy:
     jobs:
-      - build
+      - setup
+      - build:
+          requires:
+            - setup
       - test:
           requires:
             - build
