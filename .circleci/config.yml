@@ -8,7 +8,7 @@ jobs:
   setup:
     <<: *defaults
     steps:
-      - run: mkdir -p code-gov-api
+      - run: mkdir -p code-gov-api && cd code-gov-api
       - checkout:
           path: /tmp/code-gov-api
       - restore_cache:
