@@ -12,7 +12,7 @@ jobs:
       - checkout:
           path: /tmp/code-gov-api
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "/tmp/code-gov-api/package.json" }}
       - run:
           name: verify-npm-cache
           command: npm cache verify
@@ -33,9 +33,9 @@ jobs:
             sudo dpkg -i cf-cli_amd64.deb
             cf -v
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "/tmp/code-gov-api/package.json" }}
           paths:
-            - /tmp/code-gov-api/bnode_modules
+            - /tmp/code-gov-api/node_modules
       - persist_to_workspace:
           root: /tmp
           paths:
