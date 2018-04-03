@@ -49,6 +49,18 @@
       "https"
     ],
     "paths": {
+      "help-wanted": {
+        "get": {
+          "summary": "Help Wanted Tasks",
+          "description": "Get a list of tasks that the federal government would like your help with",
+          "produces": ["application/json"],
+          "parameters": [{
+              
+          }],
+          "responses": {
+          }
+        }
+      },
       "/repos": {
         "get": {
           "tags": [
