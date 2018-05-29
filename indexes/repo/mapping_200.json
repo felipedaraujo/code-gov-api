@@ -2,38 +2,38 @@
   "repo": {
     "properties": {
       "repoID": {
-        "type": "string",
+        "type": "text",
         "index": "not_analyzed"
       },
       "agency": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
           },
           "acronym": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "keyword_ci"
               }
             }
           },
           "website": {
-            "type": "string",
+            "type": "text",
             "index": "not_analyzed"
           },
           "codeUrl": {
-            "type": "string",
+            "type": "text",
             "index": "not_analyzed"
           },
           "requirements": {
@@ -67,21 +67,21 @@
         "type": "object",
         "properties": {
           "method": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
           },
           "ifOther": {
-            "type": "string",
+            "type": "text",
             "analyzer": "englishfulltext",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
@@ -89,79 +89,79 @@
         }
       },
       "status": {
-        "type": "string",
+        "type": "text",
         "analyzer": "keyword_ci"
       },
       "vcs": {
-        "type": "string",
+        "type": "text",
         "analyzer": "keyword_ci"
       },
       "repositoryURL": {
-        "type": "string",
+        "type": "text",
         "analyzer": "keyword_ci"
       },
       "name": {
-        "type": "string",
+        "type": "text",
         "analyzer": "keyword_ci",
         "fields": {
           "_fulltext": {
-            "type": "string",
+            "type": "text",
             "analyzer": "englishfulltext"
           }
         }
       },
       "version": {
-        "type": "string",
+        "type": "text",
         "analyzer": "keyword_ci"
       },
       "organization": {
-        "type": "string",
+        "type": "text",
         "analyzer": "keyword_ci",
         "fields": {
           "_fulltext": {
-            "type": "string",
+            "type": "text",
             "analyzer": "englishfulltext"
           }
         }
       },
       "homepageURL": {
-        "type": "string",
+        "type": "text",
         "analyzer": "keyword_ci"
       },
       "downloadURL": {
-        "type": "string",
+        "type": "text",
         "index": "not_analyzed"
       },
       "description": {
-        "type": "string",
+        "type": "text",
         "analyzer": "englishfulltext"
       },
       "events": {
-        "type": "string",
+        "type": "text",
         "analyzer": "keyword_ci",
         "fields": {
           "_fulltext": {
-            "type": "string",
+            "type": "text",
             "analyzer": "englishfulltext"
           }
         }
       },
       "tags": {
-        "type": "string",
+        "type": "text",
         "analyzer": "keyword_ci",
         "fields": {
           "_fulltext": {
-            "type": "string",
+            "type": "text",
             "analyzer": "englishfulltext"
           }
         }
       },
       "languages": {
-        "type": "string",
+        "type": "text",
         "analyzer": "keyword_ci",
         "fields": {
           "_fulltext": {
-            "type": "string",
+            "type": "text",
             "analyzer": "englishfulltext"
           }
         }
@@ -171,41 +171,41 @@
         "include_in_root": true,
         "properties": {
           "name": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
           },
           "email": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
           },
           "twitter": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
           },
           "phone": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
@@ -217,21 +217,21 @@
         "include_in_root": true,
         "properties": {
           "name": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
           },
           "email": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
@@ -245,33 +245,33 @@
             "type": "nested",
             "properties": {
               "name": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "keyword_ci",
                 "fields": {
                   "_fulltext": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "englishfulltext"
                   }
                 }
               },
               "URL": {
-                "type": "string",
+                "type": "text",
                 "index": "not_analyzed"
               }
             }
           },
           "usageType": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
           },
           "exemptionText": {
-            "type": "string",
+            "type": "text",
             "analyzer": "englishfulltext"
           }
         }
@@ -284,17 +284,17 @@
         "type": "nested",
         "properties": {
           "name": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
           },
           "URL": {
-            "type": "string",
+            "type": "text",
             "index": "not_analyzed"
           }
         }
@@ -303,27 +303,27 @@
         "type": "nested",
         "properties": {
           "name": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
           },
           "URL": {
-            "type": "string",
+            "type": "text",
             "index": "not_analyzed"
           }
         }
       },
       "disclaimerURL": {
-        "type": "string",
+        "type": "text",
         "index": "not_analyzed"
       },
       "disclaimerText": {
-        "type": "string",
+        "type": "text",
         "analyzer": "englishfulltext"
       },
       "date": {
@@ -352,38 +352,38 @@
         "type": "date"
       },
       "version": {
-        "type": "string",
+        "type": "text",
         "index": "not_analyzed"
       },
       "agency": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "englishfulltext"
               }
             }
           },
           "acronym": {
-            "type": "string",
+            "type": "text",
             "analyzer": "keyword_ci",
             "fields": {
               "_fulltext": {
-                "type": "string",
+                "type": "text",
                 "analyzer": "keyword_ci"
               }
             }
           },
           "website": {
-            "type": "string",
+            "type": "text",
             "index": "not_analyzed"
           },
           "codeUrl": {
-            "type": "string",
+            "type": "text",
             "index": "not_analyzed"
           },
           "requirements": {
@@ -417,28 +417,28 @@
         "type": "nested",
         "properties": {
           "organization": {
-            "type": "string"
+            "type": "text"
           },
           "project_name": {
-            "type": "string"
+            "type": "text"
           },
           "errors": {
             "type": "nested",
             "properties": {
               "keyword": {
-                "type": "string"
+                "type": "text"
               },
               "dataPath": {
-                "type": "string"
+                "type": "text"
               },
               "schemaPath": {
-                "type": "string"
+                "type": "text"
               },
               "params": {
                 "type": "object"
               },
               "message": {
-                "type": "string"
+                "type": "text"
               }
             }
           },
@@ -446,19 +446,19 @@
             "type": "nested",
             "properties": {
               "keyword": {
-                "type": "string"
+                "type": "text"
               },
               "dataPath": {
-                "type": "string"
+                "type": "text"
               },
               "schemaPath": {
-                "type": "string"
+                "type": "text"
               },
               "params": {
                 "type": "object"
               },
               "message": {
-                "type": "string"
+                "type": "text"
               }
             }
           },
@@ -466,19 +466,19 @@
             "type": "nested",
             "properties": {
               "keyword": {
-                "type": "string"
+                "type": "text"
               },
               "dataPath": {
-                "type": "string"
+                "type": "text"
               },
               "schemaPath": {
-                "type": "string"
+                "type": "text"
               },
               "params": {
                 "type": "object"
               },
               "message": {
-                "type": "string"
+                "type": "text"
               }
             }
           }
