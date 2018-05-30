@@ -2,8 +2,7 @@
   "repo": {
     "properties": {
       "repoID": {
-        "type": "text",
-        "index": "not_analyzed"
+        "type": "keyword"
       },
       "agency": {
         "type": "object",
@@ -29,35 +28,28 @@
             }
           },
           "website": {
-            "type": "text",
-            "index": "not_analyzed"
+            "type": "keyword"
           },
           "codeUrl": {
-            "type": "text",
-            "index": "not_analyzed"
+            "type": "keyword"
           },
           "requirements": {
             "type": "nested",
             "properties": {
               "agencyWidePolicy": {
-                "type": "float",
-                "index": "not_analyzed"
+                "type": "float"
               },
               "openSourceRequirement": {
-                "type": "float",
-                "index": "not_analyzed"
+                "type": "float"
               },
               "inventoryRequirement": {
-                "type": "float",
-                "index": "not_analyzed"
+                "type": "float"
               },
               "schemaFormat": {
-                "type": "float",
-                "index": "not_analyzed"
+                "type": "float"
               },
               "overallCompliance": {
-                "type": "float",
-                "index": "not_analyzed"
+                "type": "float"
               }
             }
           }
@@ -129,8 +121,7 @@
         "analyzer": "keyword_ci"
       },
       "downloadURL": {
-        "type": "text",
-        "index": "not_analyzed"
+        "type": "keyword"
       },
       "description": {
         "type": "text",
@@ -255,8 +246,7 @@
                 }
               },
               "URL": {
-                "type": "text",
-                "index": "not_analyzed"
+                "type": "keyword"
               }
             }
           },
@@ -277,8 +267,7 @@
         }
       },
       "laborHours": {
-        "type": "integer",
-        "index": "not_analyzed"
+        "type": "integer"
       },
       "relatedCode": {
         "type": "nested",
@@ -294,8 +283,7 @@
             }
           },
           "URL": {
-            "type": "text",
-            "index": "not_analyzed"
+            "type": "keyword"
           }
         }
       },
@@ -313,8 +301,7 @@
             }
           },
           "URL": {
-            "type": "text",
-            "index": "not_analyzed"
+            "type": "keyword"
           }
         }
       },
@@ -352,8 +339,7 @@
         "type": "date"
       },
       "version": {
-        "type": "text",
-        "index": "not_analyzed"
+        "type": "keyword"
       },
       "agency": {
         "type": "object",
@@ -379,35 +365,28 @@
             }
           },
           "website": {
-            "type": "text",
-            "index": "not_analyzed"
+            "type": "keyword"
           },
           "codeUrl": {
-            "type": "text",
-            "index": "not_analyzed"
+            "type": "keyword"
           },
           "requirements": {
             "type": "object",
             "properties": {
               "agencyWidePolicy": {
-                "type": "float",
-                "index": "not_analyzed"
+                "type": "float"
               },
               "openSourceRequirement": {
-                "type": "float",
-                "index": "not_analyzed"
+                "type": "float"
               },
               "inventoryRequirement": {
-                "type": "float",
-                "index": "not_analyzed"
+                "type": "float"
               },
               "schemaFormat": {
-                "type": "float",
-                "index": "not_analyzed"
+                "type": "float"
               },
               "overallCompliance": {
-                "type": "float",
-                "index": "not_analyzed"
+                "type": "float"
               }
             }
           }
