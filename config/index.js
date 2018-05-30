@@ -5,18 +5,21 @@ const jsonfile = require('jsonfile');
 
 function getCloudFoundryEnv() {
   const appEnv = cfenv.getAppEnv();
+  const appEnvReturnVals = {};
+
   if(!appEnv.isLocal){
     const elasticSearchCredentials = appEnv.getServiceCreds("code_gov_elasticsearch");
 
-    return {
-      esAuth: `${elasticSearchCredentials.username}:${elasticSearchCredentials.password}`,
-      esHost: elasticSearchCredentials.hostname,
-      esPort: elasticSearchCredentials.port,
-      spaceName: appEnv.app.space_name,
-      uris: appEnv.app.uris
-    };
+    appEnvReturnVals.isCloudGov = true;
+    appEnvReturnVals.esAuth = `${elasticSearchCredentials.username}:${elasticSearchCredentials.password}`;
+    appEnvReturnVals.esHost = `${elasticSearchCredentials.hostname}:${elasticSearchCredentials.port}`;
+    appEnvReturnVals.spaceName = appEnv.app.space_name;
+    appEnvReturnVals.uris = appEnv.app.uris;
+  } else {
+    appEnvReturnVals.isCloudGov = false;
   }
-  return {};
+
+  return appEnvReturnVals;
 }
 
 function getAppFilesDirectories() {
@@ -70,10 +73,19 @@ function getConfig(env) {
   config.PORT = process.env.PORT || 3001;
 
   const cfElasticsearch = getCloudFoundryEnv();
+  let esAuth;
+  let esHost;
 
-  config.ES_AUTH = `${process.env.ES_USER}:${process.env.ES_PASSWORD}` || cfElasticsearch.esAuth || 'root';
-  config.ES_HOST = process.env.ES_HOST || cfElasticsearch.esHost || 'localhost';
-  config.ES_PORT = process.env.ES_PORT || cfElasticsearch.esPort || 9200;
+  if(!cfElasticsearch.isCloudGov) {
+    const user = process.env.ES_USER || 'root';
+    const host = process.env.ES_HOST || 'localhost';
+
+    esAuth = process.env.ES_PASSWORD ? `${user}:${process.env.ES_PASSWORD}` : user;
+    esHost = process.env.ES_PORT ? `${host}: ${process.env.ES_PORT}` : host;
+  }
+
+  config.ES_AUTH = esAuth || cfElasticsearch.esAuth || 'root';
+  config.ES_HOST = esHost || cfElasticsearch.esHost || 'localhost:9200';
 
   Object.assign(config, getAppFilesDirectories());
   Object.assign(config, getSwaggerConf(cfElasticsearch.spaceName, cfElasticsearch.uri, config.PORT));
