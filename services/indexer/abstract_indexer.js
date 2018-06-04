@@ -111,7 +111,7 @@ class AbstractIndexer {
       this.client.indices.putMapping({
         index: this.esIndex,
         type: this.esType,
-        body: this.esMapping
+        body: this.esMapping[this.esType]
       }, (err, response, status) => {
         if(err) {
           this.logger.error(err);
