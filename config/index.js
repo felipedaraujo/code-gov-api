@@ -14,7 +14,7 @@ function getCloudFoundryEnv() {
     appEnvReturnVals.esAuth = `${elasticSearchCredentials.username}:${elasticSearchCredentials.password}`;
     appEnvReturnVals.esHost = `${elasticSearchCredentials.hostname}:${elasticSearchCredentials.port}`;
     appEnvReturnVals.spaceName = appEnv.app.space_name;
-    appEnvReturnVals.uris = appEnv.app.uris;
+    appEnvReturnVals.esUri = elasticSearchCredentials.uri;
   } else {
     appEnvReturnVals.isCloudGov = false;
   }
@@ -45,6 +45,22 @@ function getSwaggerConf(spaceName, uri, port) {
   SWAGGER_DOCUMENT.host = SWAGGER_HOST || `0.0.0.0:${port}`;
 }
 
+function setElasticsearchHost(cfElasticsearch) {
+
+  let esHost = undefined;
+
+  if(!cfElasticsearch.isCloudGov) {
+
+    if(process.env.ES_HOST) {
+      return process.env.ES_PORT ? `${process.env.ES_HOST}:${process.env.ES_PORT}` : process.env.ES_HOST;
+    }
+    return 'http://localhost:9200';
+  }
+
+  return esHost || cfElasticsearch.esUri || 'http://localhost:9200';
+
+}
+
 function getConfig(env) {
   let config = {
     prod_envs: ['prod', 'production', 'stag', 'staging']
@@ -73,19 +89,10 @@ function getConfig(env) {
   config.PORT = process.env.PORT || 3001;
 
   const cfElasticsearch = getCloudFoundryEnv();
-  let esAuth;
-  let esHost;
 
-  if(!cfElasticsearch.isCloudGov) {
-    const user = process.env.ES_USER || 'root';
-    const host = process.env.ES_HOST || 'localhost';
+  let esHost = setElasticsearchHost(cfElasticsearch);
 
-    esAuth = process.env.ES_PASSWORD ? `${user}:${process.env.ES_PASSWORD}` : user;
-    esHost = process.env.ES_PORT ? `${host}: ${process.env.ES_PORT}` : host;
-  }
-
-  config.ES_AUTH = esAuth || cfElasticsearch.esAuth || 'root';
-  config.ES_HOST = esHost || cfElasticsearch.esHost || 'localhost:9200';
+  config.ES_HOST = esHost;
 
   Object.assign(config, getAppFilesDirectories());
   Object.assign(config, getSwaggerConf(cfElasticsearch.spaceName, cfElasticsearch.uri, config.PORT));
