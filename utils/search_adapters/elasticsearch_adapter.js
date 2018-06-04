@@ -30,8 +30,9 @@ class ElasticsearchAdapter extends BaseElasticsearchAdapter {
     super(config);
 
     this.client = new ElasticSearch.Client({
-      host: `${this.config.ES_HOST}`,
-      httpAuth: this.config.ES_AUTH,
+      hosts: [
+        this.config.ES_HOST
+      ],
       log: SearchLogger
     });
   }
