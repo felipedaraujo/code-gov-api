@@ -306,8 +306,7 @@
         }
       },
       "disclaimerURL": {
-        "type": "text",
-        "index": "not_analyzed"
+        "type": "keyword"
       },
       "disclaimerText": {
         "type": "text",
